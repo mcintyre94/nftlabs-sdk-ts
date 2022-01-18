@@ -322,6 +322,20 @@ export class PackModule
     ]);
   }
 
+  public async transferFireAndForget(
+    to: string,
+    tokenId: string,
+    amount: BigNumber,
+  ) {
+    this.sendTransaction("safeTransferFrom", [
+      await this.getSignerAddress(),
+      to,
+      tokenId,
+      amount,
+      [0],
+    ]);
+  }
+
   // owner functions
   /**
    * Create Pack
