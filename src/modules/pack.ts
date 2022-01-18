@@ -88,8 +88,7 @@ export interface IPackBatchArgs {
  */
 export class PackModule
   extends ModuleWithRoles<PackContract>
-  implements ITransferable
-{
+  implements ITransferable {
   public static moduleType: ModuleType = ModuleType.PACK;
 
   public static roles = [
@@ -327,7 +326,7 @@ export class PackModule
     tokenId: string,
     amount: BigNumber,
   ) {
-    this.sendTransaction("safeTransferFrom", [
+    await this.sendTransactionFireAndForget("safeTransferFrom", [
       await this.getSignerAddress(),
       to,
       tokenId,

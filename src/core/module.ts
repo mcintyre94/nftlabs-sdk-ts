@@ -113,8 +113,8 @@ export class Module<TContract extends BaseContract = BaseContract> {
     this.contract = this.connectContract();
     this.readOnlyContract = this.options.readOnlyRpcUrl
       ? (this.contract.connect(
-          ethers.getDefaultProvider(this.options.readOnlyRpcUrl),
-        ) as TContract)
+        ethers.getDefaultProvider(this.options.readOnlyRpcUrl),
+      ) as TContract)
       : this.contract;
     this.sdk = sdk;
   }
@@ -177,8 +177,8 @@ export class Module<TContract extends BaseContract = BaseContract> {
     this.contract = this.connectContract();
     this.readOnlyContract = this.options.readOnlyRpcUrl
       ? (this.contract.connect(
-          ethers.getDefaultProvider(this.options.readOnlyRpcUrl),
-        ) as TContract)
+        ethers.getDefaultProvider(this.options.readOnlyRpcUrl),
+      ) as TContract)
       : this.contract;
   }
 
@@ -303,6 +303,22 @@ export class Module<TContract extends BaseContract = BaseContract> {
   /**
    * @internal
    */
+  protected async sendTransactionFireAndForget(
+    fn: string,
+    args: any[],
+    callOverrides?: CallOverrides,
+  ): Promise<void> {
+    return this.sendContractTransactionFireAndForget(
+      this.contract,
+      fn,
+      args,
+      callOverrides,
+    );
+  }
+
+  /**
+   * @internal
+   */
   protected async sendContractTransaction(
     contract: BaseContract,
     fn: string,
@@ -339,6 +355,41 @@ export class Module<TContract extends BaseContract = BaseContract> {
       const receipt = tx.wait();
       this.emitTransactionEvent("completed", tx.hash);
       return receipt;
+    }
+  }
+
+  /**
+   * @internal
+   */
+  protected async sendContractTransactionFireAndForget(
+    contract: BaseContract,
+    fn: string,
+    args: any[],
+    callOverrides?: CallOverrides,
+  ): Promise<void> {
+    if (!callOverrides) {
+      callOverrides = await this.getCallOverrides();
+    }
+
+    if (
+      this.options.transactionRelayerUrl ||
+      this.options.gasless.biconomy.apiKey
+    ) {
+      const txHash = await this.sendGaslessTransaction(
+        contract,
+        fn,
+        args,
+        callOverrides,
+      );
+      this.emitTransactionEvent("submitted", txHash);
+    } else {
+      const tx = await this.sendTransactionByFunction(
+        contract,
+        fn,
+        args,
+        callOverrides,
+      );
+      this.emitTransactionEvent("submitted", tx.hash);
     }
   }
 
@@ -463,7 +514,7 @@ export class Module<TContract extends BaseContract = BaseContract> {
         );
         return event;
         // eslint-disable-next-line no-empty
-      } catch (e) {}
+      } catch (e) { }
     }
     return null;
   }
@@ -491,7 +542,7 @@ export class Module<TContract extends BaseContract = BaseContract> {
  */
 export class ModuleWithRoles<
   TContract extends AccessControlEnumerable = AccessControlEnumerable,
-> extends Module<TContract> {
+  > extends Module<TContract> {
   /**
    * @virtual
    * @internal

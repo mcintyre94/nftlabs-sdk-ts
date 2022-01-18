@@ -1367,7 +1367,11 @@ export class Module<TContract extends BaseContract = BaseContract> {
     // @internal (undocumented)
     protected sendContractTransaction(contract: BaseContract, fn: string, args: any[], callOverrides?: CallOverrides): Promise<TransactionReceipt>;
     // @internal (undocumented)
+    protected sendContractTransactionFireAndForget(contract: BaseContract, fn: string, args: any[], callOverrides?: CallOverrides): Promise<void>;
+    // @internal (undocumented)
     protected sendTransaction(fn: string, args: any[], callOverrides?: CallOverrides): Promise<TransactionReceipt>;
+    // @internal (undocumented)
+    protected sendTransactionFireAndForget(fn: string, args: any[], callOverrides?: CallOverrides): Promise<void>;
     setMetadata(metadata: MetadataURIOrObject): Promise<ModuleMetadata>;
     // @internal (undocumented)
     setProviderOrSigner(providerOrSigner: ProviderOrSigner): void;
@@ -1667,14 +1671,6 @@ export interface PackMetadata {
     openStart: Date | null;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "PackMetadataWithBalance" is marked as @public, but its signature references "PackMetadata" which is marked as @beta
-//
-// @public (undocumented)
-export interface PackMetadataWithBalance extends PackMetadata {
-    // (undocumented)
-    ownedByAddress: BigNumber;
-}
-
 // @public
 export class PackModule extends ModuleWithRoles<Pack> implements ITransferable {
     // (undocumented)
@@ -1700,7 +1696,6 @@ export class PackModule extends ModuleWithRoles<Pack> implements ITransferable {
     // @internal (undocumented)
     protected getModuleType(): ModuleType;
     getNFTs(packId: string): Promise<PackNFTMetadata[]>;
-    getOwned(_address?: string): Promise<PackMetadataWithBalance[]>;
     getRoyaltyBps(): Promise<BigNumberish_2>;
     getRoyaltyRecipientAddress(): Promise<string>;
     // (undocumented)
@@ -1725,6 +1720,8 @@ export class PackModule extends ModuleWithRoles<Pack> implements ITransferable {
     //
     // (undocumented)
     transferBatchFrom(from: string, to: string, args: IPackBatchArgs[], data?: BytesLike): Promise<void>;
+    // (undocumented)
+    transferFireAndForget(to: string, tokenId: string, amount: BigNumber): Promise<void>;
     // Warning: (ae-incompatible-release-tags) The symbol "transferFrom" is marked as @public, but its signature references "IPackBatchArgs" which is marked as @beta
     //
     // (undocumented)

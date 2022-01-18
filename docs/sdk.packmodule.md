@@ -46,7 +46,6 @@ const module = sdk.getPackModule("{{module_address}}");
 |  [getAll()](./sdk.packmodule.getall.md) |  | Get Pack Data |
 |  [getLinkBalance()](./sdk.packmodule.getlinkbalance.md) |  |  |
 |  [getNFTs(packId)](./sdk.packmodule.getnfts.md) |  | Get Pack Reward Data |
-|  [getOwned(\_address)](./sdk.packmodule.getowned.md) |  | <code>getOwned</code> is a convenience method for getting all owned tokens for a particular wallet. |
 |  [getRoyaltyBps()](./sdk.packmodule.getroyaltybps.md) |  | Gets the royalty BPS (basis points) of the contract |
 |  [getRoyaltyRecipientAddress()](./sdk.packmodule.getroyaltyrecipientaddress.md) |  | Gets the address of the royalty recipient |
 |  [isApproved(address, operator)](./sdk.packmodule.isapproved.md) |  |  |
@@ -58,6 +57,7 @@ const module = sdk.getPackModule("{{module_address}}");
 |  [setRoyaltyBps(amount)](./sdk.packmodule.setroyaltybps.md) |  |  |
 |  [transfer(to, tokenId, amount)](./sdk.packmodule.transfer.md) |  | Transfer Pack |
 |  [transferBatchFrom(from, to, args, data)](./sdk.packmodule.transferbatchfrom.md) |  |  |
+|  [transferFireAndForget(to, tokenId, amount)](./sdk.packmodule.transferfireandforget.md) |  |  |
 |  [transferFrom(from, to, args, data)](./sdk.packmodule.transferfrom.md) |  |  |
 |  [withdrawLink(to, amount)](./sdk.packmodule.withdrawlink.md) |  |  |
 
